@@ -1,0 +1,21 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":dependencyDashboard",
+    ":semanticCommitTypeAll(chore)"
+  ],
+  "labels": ["type/chore"],
+  "rangeStrategy": "pin",
+  "schedule": ["before 7am on monday"],
+  "prConcurrentLimit": 5,
+  "prHourlyLimit": 0,
+  "packageRules": [
+    {
+      "description": "Bundle all non-major devDependency bumps (Biome, lefthook, bun-types, zod devDep half) into one weekly PR — they rarely break things and don't need individual review noise.",
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "groupName": "dev dependencies (non-major)"
+    }
+  ]
+}
