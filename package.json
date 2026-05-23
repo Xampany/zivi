@@ -1,0 +1,29 @@
+{
+  "name": "@xampany/zivi",
+  "version": "0.0.1",
+  "description": "Zod as a Unix filter — pipe JSON through a Zod schema for validation",
+  "license": "MIT",
+  "type": "module",
+  "module": "src/index.ts",
+  "bin": {
+    "zivi": "src/index.ts"
+  },
+  "scripts": {
+    "lint": "biome lint src/",
+    "fmt": "biome format --write src/",
+    "check": "biome check --write src/",
+    "prepare": "lefthook install"
+  },
+  "peerDependencies": {
+    "zod": "4.3.6"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "bun-types": "1.3.12",
+    "lefthook": "2.1.6",
+    "zod": "4.3.6"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

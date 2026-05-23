@@ -1,0 +1,18 @@
+# Git hook manager. Runs guardrails automatically on `git commit`.
+#
+# - `check`: Biome lint + format with --write; `stage_fixed: true` auto-stages
+#   any files Biome reformats so the fixes land in the same commit.
+#
+# Tests are NOT gated here — keep the gate lint/format-only. If `bun test`
+# turns out to be flaky on Windows shutdown (see the aitecee project's
+# experience), a pre-commit gate would just produce false negatives.
+# Run `bun run test` manually when changing test-touched code.
+#
+# Installed automatically by `bun install` via the `prepare` script in
+# package.json. Manual install: `bunx lefthook install`.
+
+pre-commit:
+  commands:
+    check:
+      run: bun run check
+      stage_fixed: true
