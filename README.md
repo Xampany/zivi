@@ -19,21 +19,21 @@ Bun is required at runtime in v0.x — zivi loads your schema via dynamic `impor
 Write a schema as a TypeScript file with a default export:
 
 ```ts
-// part.schema.ts
+// simple.schema.ts
 import { z } from "zod";
 
 export default z.object({
   name: z.string(),
-  diameter_mm: z.number().positive(),
-  material: z.enum(["A180", "A350", "G"]),
+  age: z.number().int().nonnegative(),
+  role: z.enum(["admin", "editor", "viewer"]),
 });
 ```
 
 Pipe JSON through it:
 
 ```bash
-echo '{"name":"bushing-12","diameter_mm":12,"material":"A180"}' \
-  | zivi ./part.schema.ts \
+echo '{"name":"Ada","age":30,"role":"admin"}' \
+  | zivi ./simple.schema.ts \
   > validated.json
 echo $?   # 0
 ```
@@ -41,11 +41,11 @@ echo $?   # 0
 On schema mismatch, zivi writes the formatted Zod error to stderr and exits `1`:
 
 ```bash
-echo '{"name":"bad","diameter_mm":-5,"material":"unknown"}' | zivi ./part.schema.ts
+echo '{"name":"Ada","age":-5,"role":"superuser"}' | zivi ./simple.schema.ts
 # {
 #   "_errors": [],
-#   "diameter_mm": { "_errors": ["Number must be greater than 0"] },
-#   "material":    { "_errors": ["Invalid enum value..."] }
+#   "age":  { "_errors": ["Number must be greater than or equal to 0"] },
+#   "role": { "_errors": ["Invalid enum value..."] }
 # }
 echo $?   # 1
 ```
@@ -74,7 +74,7 @@ The schema file is loaded via dynamic `import()`, so the **full Zod surface** is
 
 The Zod ecosystem has every flavour of *argv parser built with Zod* (`@mizchi/zodcli`, `GregBrimble/zodcli`, `zod-opts`, `argzod`, `zodiarg`) and every flavour of *schema-to-schema conversion* (`json-schema-to-zod`) — but no Unix-style **validator filter**. `ajv-cli` exists for JSON Schema, and zivi fills the same gap for Zod.
 
-The use case that surfaced it: piping CAD evaluator output through a Zod schema as a validation gate before feeding downstream rules engines. Once you've written the schema in TypeScript, keeping a duplicate JSON-Schema copy around just to validate shell-pipe output is drift waiting to happen. zivi closes the loop.
+The use case that surfaced it: piping the JSON output of a CLI tool through a Zod schema as a validation gate before handing it to a downstream consumer. Once you've already written the schema in TypeScript for use elsewhere in your codebase, keeping a duplicate JSON-Schema copy around just to validate shell-pipe output is drift waiting to happen. zivi closes the loop.
 
 ## Roadmap
 
