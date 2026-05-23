@@ -9,9 +9,10 @@
     "zivi": "src/index.ts"
   },
   "scripts": {
-    "lint": "biome lint src/",
-    "fmt": "biome format --write src/",
-    "check": "biome check --write src/",
+    "test": "bun test tests/",
+    "lint": "biome lint src/ tests/",
+    "fmt": "biome format --write src/ tests/",
+    "check": "biome check --write src/ tests/",
     "prepare": "lefthook install"
   },
   "peerDependencies": {
